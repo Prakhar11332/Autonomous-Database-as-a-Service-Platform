@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: "dbaas-control-plane"
+    static_configs:
+      - targets: ["host.docker.internal:8000"]
+
+  # Add one target per tenant container's metrics exporter as they're
+  # provisioned, or scrape the Monitoring Engine's aggregation endpoint
+  # instead of every tenant individually once that engine exists.
+  - job_name: "dbaas-monitoring-engine"
+    static_configs:
+      - targets: ["host.docker.internal:8000"]
+    metrics_path: /monitoring/metrics
